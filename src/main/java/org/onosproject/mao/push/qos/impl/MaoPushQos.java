@@ -22,21 +22,26 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.onosproject.mao.push.qos.intf.MaoPushQosService;
-import org.onosproject.mao.qos.impl.MaoQosManager;
+import org.onosproject.mao.qos.api.impl.qdisc.MaoHtbQdiscObj;
+import org.onosproject.mao.qos.api.intf.MaoQosObj;
+import org.onosproject.mao.qos.intf.MaoQosService;
+import org.onosproject.net.DeviceId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Skeletal ONOS application component.
  */
 @Component(immediate = true)
+@Service
 public class MaoPushQos implements MaoPushQosService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-    protected MaoQosManager maoQosManager;
+    protected MaoQosService maoQosService;
 
 
 
@@ -54,6 +59,24 @@ public class MaoPushQos implements MaoPushQosService {
 
 
 
+    @Override
+    public boolean pushQos(){
+
+        MaoHtbQdiscObj.Builder maoHtbQdiscObjBuilder = MaoHtbQdiscObj.builder();
+
+        maoHtbQdiscObjBuilder
+                .add()
+                .setDeviceId(DeviceId.deviceId("of:0001111111111111"))
+                .setDeviceIntfNumber(3)
+                .setParent(MaoQosObj.ROOT)
+                .setHandleOrClassId("1")
+                .setDefaultId(1);
+
+
+        return maoQosService.Apply(maoHtbQdiscObjBuilder.build());
+//        maoQosService.Apply(null);
+//        return true;
+    }
 
 
 }

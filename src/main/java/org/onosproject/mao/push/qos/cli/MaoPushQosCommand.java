@@ -17,17 +17,20 @@ package org.onosproject.mao.push.qos.cli;
 
 import org.apache.karaf.shell.commands.Command;
 import org.onosproject.cli.AbstractShellCommand;
+import org.onosproject.mao.push.qos.intf.MaoPushQosService;
 
 /**
  * Sample Apache Karaf CLI command
  */
-@Command(scope = "onos", name = "sample",
-         description = "Sample Apache Karaf CLI command")
-public class AppCommand extends AbstractShellCommand {
+@Command(scope = "onos", name = "mao-push-qos",
+         description = "Mao Push Qos Test")
+public class MaoPushQosCommand extends AbstractShellCommand {
 
     @Override
     protected void execute() {
-        print("Hello %s", "World");
-    }
 
+        MaoPushQosService maoPushQosService = AbstractShellCommand.get(MaoPushQosService.class);
+
+        print("Hello %s", maoPushQosService.pushQos());
+    }
 }
